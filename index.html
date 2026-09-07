@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>VendeFácil</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker registrado'))
+                .catch(err => console.log('Erro ao registrar SW:', err));
+        }
+    </script>
+</head>
+<body>
+
+    <!-- ===== Cabeçalho ===== -->
+    <header id="app-header">
+        <h1>VendeFácil</h1>
+        <span id="header-data">Hoje, --/--/----</span>
+    </header>
+
+    <!-- ===== Conteúdo principal ===== -->
+    <main id="app-main">
+
+        <!-- ===== SEÇÃO HOJE ===== -->
+        <section id="secao-hoje" class="secao ativa">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h2 style="margin:0; font-size:1.2rem;">VENDAS DE HOJE</h2>
+                <button id="btn-exportar-hoje" class="btn-pequeno" style="background:#4A90D9; color:#fff; border:none; padding:6px 14px; border-radius:30px; font-size:0.8rem; font-weight:600; cursor:pointer;">📤 Exportar</button>
+            </div>
+            <div class="indicadores">
+                <div class="indicador">
+                    <span class="label">Faturamento</span>
+                    <span class="valor" id="faturamento-total">R$ 0,00</span>
+                </div>
+                <div class="indicador">
+                    <span class="label">Vendidos</span>
+                    <span class="valor" id="total-vendidos">0</span>
+                </div>
+                <div class="indicador">
+                    <span class="label">Restantes</span>
+                    <span class="valor" id="total-restantes">0</span>
+                </div>
+            </div>
+
+            <div id="lista-produtos-hoje">
+                <!-- Cards renderizados dinamicamente -->
+            </div>
+
+            <button id="btn-adicionar-produto" class="btn-flutuante">+</button>
+        </section>
+
+        <!-- ===== SEÇÃO HISTÓRICO ===== -->
+        <section id="secao-historico" class="secao">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h2 style="margin:0;">Histórico</h2>
+                <button id="btn-exportar-historico" class="btn-pequeno" style="background:#4A90D9; color:#fff; border:none; padding:6px 14px; border-radius:30px; font-size:0.8rem; font-weight:600; cursor:pointer;">📤 Exportar Excel</button>
+            </div>
+            <div id="lista-historico">
+                <!-- Lista de dias -->
+            </div>
+            <div id="detalhe-historico" style="display:none;">
+                <button id="btn-voltar-historico" class="btn-voltar">← Voltar</button>
+                <div id="conteudo-detalhe"></div>
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO PRODUTOS ===== -->
+        <section id="secao-produtos" class="secao">
+            <h2>Meus Produtos</h2>
+            <div id="lista-produtos-cadastrados">
+                <!-- Lista de produtos cadastrados -->
+            </div>
+            <button id="btn-novo-produto" class="btn-primario">+ Adicionar Produto</button>
+        </section>
+
+        <!-- ===== SEÇÃO CONFIGURAÇÕES ===== -->
+        <section id="secao-configuracoes" class="secao">
+            <h2>Configurações</h2>
+            <button id="btn-limpar-dados" class="btn-secundario">Limpar todos os dados</button>
+            <p style="margin-top:1rem; font-size:0.8rem; color:#888;">
+                Versão 1.0 – VendeFácil
+            </p>
+        </section>
+
+    </main>
+
+    <!-- ===== Navegação inferior ===== -->
+    <nav id="app-nav">
+        <button class="nav-item ativo" data-secao="hoje">
+            <span class="icone">📊</span>
+            <span class="rotulo">Hoje</span>
+        </button>
+        <button class="nav-item" data-secao="historico">
+            <span class="icone">📜</span>
+            <span class="rotulo">Histórico</span>
+        </button>
+        <button class="nav-item" data-secao="produtos">
+            <span class="icone">📦</span>
+            <span class="rotulo">Produtos</span>
+        </button>
+        <button class="nav-item" data-secao="configuracoes">
+            <span class="icone">⚙️</span>
+            <span class="rotulo">Config.</span>
+        </button>
+    </nav>
+
+    <!-- ===== MODAIS ===== -->
+
+    <!-- Modal Novo Produto / Editar -->
+    <div id="modal-produto" class="modal" style="display:none;">
+        <div class="modal-conteudo">
+            <h2 id="modal-produto-titulo">Novo Produto</h2>
+            <form id="form-produto">
+                <label for="produto-nome">Nome</label>
+                <input type="text" id="produto-nome" required />
+
+                <label for="produto-emoji">Emoji / Ícone</label>
+                <input type="text" id="produto-emoji" placeholder="🥟" maxlength="2" />
+
+                <label for="produto-quantidade">Quantidade produzida</label>
+                <input type="number" id="produto-quantidade" required min="0" />
+
+                <label for="produto-preco">Preço de venda (R$)</label>
+                <input type="number" id="produto-preco" step="0.01" required min="0" />
+
+                <div class="botoes-modal">
+                    <button type="button" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar Estoque -->
+    <div id="modal-estoque" class="modal" style="display:none;">
+        <div class="modal-conteudo">
+            <h2>Adicionar Estoque</h2>
+            <p id="estoque-produto-nome" style="font-weight:bold; text-align:center;"></p>
+            <form id="form-estoque">
+                <label for="estoque-quantidade">Quantidade a adicionar</label>
+                <input type="number" id="estoque-quantidade" required min="1" />
+                <div class="botoes-modal">
+                    <button type="button" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Fechamento (resumo) -->
+    <div id="modal-fechamento" class="modal" style="display:none;">
+        <div class="modal-conteudo">
+            <h2>Fechamento do Dia</h2>
+            <div id="resumo-fechamento">
+                <!-- preenchido dinamicamente -->
+            </div>
+            <div class="botoes-modal">
+                <button type="button" class="btn-cancelar" id="fechamento-cancelar">Cancelar</button>
+                <button type="button" class="btn-salvar" id="fechamento-encerrar">Encerrar Dia</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mudança de Dia -->
+    <div id="modal-mudanca-dia" class="modal" style="display:none;">
+        <div class="modal-conteudo">
+            <h2>Dia anterior não encerrado</h2>
+            <p>Seu dia anterior ainda não foi encerrado. O que deseja fazer?</p>
+            <div id="resumo-dia-anterior">
+                <!-- preenchido dinamicamente -->
+            </div>
+            <div class="botoes-modal" style="flex-direction:column; gap:0.5rem;">
+                <button type="button" class="btn-secundario" id="mudanca-ver-fechamento">Ver fechamento</button>
+                <button type="button" class="btn-primario" id="mudanca-encerrar">Encerrar e começar novo dia</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Selecionar Data para Exportar -->
+    <div id="modal-selecionar-data" class="modal" style="display:none;">
+        <div class="modal-conteudo">
+            <h2>Selecione o dia para exportar</h2>
+            <select id="seletor-data-historico" style="width:100%; padding:14px; border-radius:12px; border:1px solid #dce2ea; font-size:1rem; background:#f9fafc;">
+                <!-- opções preenchidas dinamicamente -->
+            </select>
+            <div class="botoes-modal">
+                <button type="button" class="btn-cancelar" id="cancelar-exportar">Cancelar</button>
+                <button type="button" class="btn-salvar" id="confirmar-exportar">Exportar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Script ===== -->
+    <script src="script.js"></script>
+</body>
+</html>

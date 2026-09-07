@@ -1,0 +1,610 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #1a1a2e;
+    padding-bottom: 70px;
+    padding-top: 60px;
+    min-height: 100vh;
+}
+
+/* ===== CABEÇALHO FIXO ===== */
+#app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, #4A90D9, #357ABD);
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+#app-header h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+#app-header #header-data {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* ===== NAVEGAÇÃO INFERIOR FIXA ===== */
+#app-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 64px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    border-top: 1px solid #eaeef2;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #8e9aaf;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: color 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-item .icone {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+.nav-item .rotulo {
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.nav-item.ativo {
+    color: #4A90D9;
+}
+
+.nav-item.ativo .icone {
+    transform: scale(1.05);
+}
+
+/* ===== SEÇÕES ===== */
+.secao {
+    display: none;
+    padding: 16px 16px 80px;
+    animation: fadeIn 0.25s ease;
+}
+
+.secao.ativa {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.secao h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: #1a1a2e;
+}
+
+/* ===== INDICADORES ===== */
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.indicador {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid #edf2f7;
+}
+
+.indicador .label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8e9aaf;
+    margin-bottom: 4px;
+}
+
+.indicador .valor {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+/* ===== CARDS DE PRODUTO ===== */
+.card-produto {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    border: 1px solid #edf2f7;
+    transition: box-shadow 0.2s;
+}
+
+.card-produto .cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.card-produto .nome {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.card-produto .emoji {
+    font-size: 1.8rem;
+    margin-right: 8px;
+}
+
+.card-produto .preco {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4A90D9;
+    background: #eef4ff;
+    padding: 2px 12px;
+    border-radius: 30px;
+}
+
+.card-produto .detalhes {
+    display: flex;
+    justify-content: space-around;
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 8px 4px;
+    margin: 8px 0 12px;
+    font-size: 0.85rem;
+}
+
+.card-produto .detalhes span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-produto .detalhes .num {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card-produto .detalhes .rot {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: #8e9aaf;
+    letter-spacing: 0.3px;
+}
+
+.card-produto .acoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-venda {
+    flex: 1;
+    background: #4A90D9;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 14px 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.25);
+}
+
+.btn-venda:active {
+    transform: scale(0.96);
+    background: #357ABD;
+}
+
+.btn-desfazer {
+    background: #f1f3f6;
+    border: none;
+    border-radius: 40px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    color: #4a5568;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-desfazer:active {
+    background: #e2e6ea;
+}
+
+.btn-estoque {
+    background: none;
+    border: 1px dashed #bcc3d0;
+    border-radius: 40px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    color: #6b7a93;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-estoque:active {
+    background: #f1f3f6;
+}
+
+/* ===== BOTÕES GERAIS ===== */
+.btn-primario {
+    background: #4A90D9;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.2);
+}
+
+.btn-primario:active {
+    background: #357ABD;
+}
+
+.btn-secundario {
+    background: #edf2f7;
+    color: #2d3748;
+    border: none;
+    border-radius: 40px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.btn-secundario:active {
+    background: #dce2ea;
+}
+
+.btn-cancelar {
+    background: #f1f3f6;
+    color: #4a5568;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+}
+
+.btn-cancelar:active {
+    background: #e2e6ea;
+}
+
+.btn-salvar {
+    background: #4A90D9;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+}
+
+.btn-salvar:active {
+    background: #357ABD;
+}
+
+.btn-voltar {
+    background: none;
+    border: none;
+    color: #4A90D9;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-bottom: 12px;
+}
+
+/* ===== BOTÃO FLUTUANTE ===== */
+.btn-flutuante {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #4A90D9;
+    color: #fff;
+    border: none;
+    font-size: 2.4rem;
+    font-weight: 300;
+    box-shadow: 0 6px 20px rgba(74, 144, 217, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.btn-flutuante:active {
+    transform: scale(0.92);
+    background: #357ABD;
+}
+
+/* ===== BOTÃO PEQUENO (exportar) ===== */
+.btn-pequeno {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+}
+
+.btn-pequeno:active {
+    background: rgba(255,255,255,0.35);
+}
+
+/* ===== MODAIS ===== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-conteudo {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 28px 22px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.modal-conteudo h2 {
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.modal-conteudo form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 12px 0 4px;
+}
+
+.modal-conteudo form input,
+.modal-conteudo form select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #dce2ea;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #f9fafc;
+    transition: border 0.2s;
+}
+
+.modal-conteudo form input:focus,
+.modal-conteudo form select:focus {
+    outline: none;
+    border-color: #4A90D9;
+    background: #fff;
+}
+
+.botoes-modal {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* ===== HISTÓRICO ===== */
+.item-historico {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border: 1px solid #edf2f7;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.item-historico:active {
+    background: #f1f4f8;
+}
+
+.item-historico .data {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #1a1a2e;
+}
+
+.item-historico .info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-top: 4px;
+}
+
+/* Detalhe do histórico */
+.detalhe-item {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+}
+
+.detalhe-item .linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 0.9rem;
+}
+
+.detalhe-item .linha:last-child {
+    border-bottom: none;
+}
+
+/* ===== LISTA DE PRODUTOS CADASTRADOS ===== */
+.item-produto-cadastro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border: 1px solid #edf2f7;
+}
+
+.item-produto-cadastro .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-produto-cadastro .info .nome {
+    font-weight: 500;
+}
+
+.item-produto-cadastro .info .preco {
+    color: #4A90D9;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.item-produto-cadastro .acoes button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #8e9aaf;
+    transition: color 0.2s;
+}
+
+.item-produto-cadastro .acoes button:active {
+    color: #4A90D9;
+}
+
+/* ===== RESPOSTA ===== */
+#resumo-fechamento,
+#resumo-dia-anterior {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+}
+
+#resumo-fechamento .linha,
+#resumo-dia-anterior .linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+#resumo-fechamento .linha:last-child,
+#resumo-dia-anterior .linha:last-child {
+    border-bottom: none;
+}
+
+/* ===== UTILITÁRIOS ===== */
+.texto-centralizado {
+    text-align: center;
+    color: #8e9aaf;
+    padding: 20px 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (min-width: 600px) {
+    body {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+    .btn-flutuante {
+        right: calc(10% + 20px);
+    }
+}
+
+@media (min-width: 800px) {
+    body {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+    .btn-flutuante {
+        right: calc(20% + 20px);
+    }
+}
